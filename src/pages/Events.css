@@ -1,0 +1,107 @@
+/* 🌟 Vibrant and Darker Theme for Events Page - Matching Reference Design */
+.event-container {
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  padding: 20px;
+  min-height: 100vh;
+  background: black; 
+  color: white;
+}
+
+/* Title */
+h1 {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 10px rgba(0, 195, 255, 0.8);
+  color: #00c3ff;
+}
+
+/* Add Event Form (Admin Only) */
+.add-event-form {
+  background: rgba(0, 102, 255, 0.3);
+  padding: 12px;
+  border-radius: 10px;
+  display: inline-block;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 195, 255, 0.8);
+}
+
+.add-event-form input,
+.add-event-form button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 2px solid #00c3ff;
+  background-color: #222;
+  color: white;
+  border-radius: 5px;
+}
+
+.add-event-form button {
+  background-color: #00c3ff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Event List Layout */
+.event-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Event Cards with Neon Glow */
+.event-card {
+  display: flex;
+  align-items: center;
+  width: 360px;
+  background: rgba(15, 15, 15, 0.9);
+  border: 2px solid rgba(0, 195, 255, 0.5);
+  box-shadow: 0 0 15px rgba(0, 195, 255, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.event-card:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 25px rgba(0, 195, 255, 0.8);
+}
+
+/* Event Date Section */
+.event-date {
+  background: linear-gradient(135deg, #007bff, #0044cc);
+  color: white;
+  padding: 18px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  width: 85px;
+  text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.3);
+}
+
+.event-date span {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Event Details */
+.event-details {
+  padding: 15px;
+  flex-grow: 1;
+}
+
+.event-details h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #00c3ff;
+  text-shadow: 2px 2px 10px rgba(0, 195, 255, 0.8);
+}
+
+.event-details p {
+  font-size: 15px;
+  color: #ddd;
+  margin-top: 5px;
+}

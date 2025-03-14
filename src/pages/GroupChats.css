@@ -1,0 +1,142 @@
+/* 🌍 Full-screen Chat Container */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background: black; /* Matches home page theme */
+  padding: 20px;
+  box-sizing: border-box;
+}
+/* ✨ Particle Background Wrapper */
+.particle-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* Ensures it stays behind everything */
+}
+/* 📩 Messages Section */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 🗨️ General Message Style */
+.message {
+  max-width: 45%;
+  padding: 12px 18px;
+  border-radius: 15px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  word-wrap: break-word;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.05); /* Subtle glass effect */
+  box-shadow: 0 4px 10px rgba(0, 195, 255, 0.2);
+  position: relative;
+  animation: pop-in 0.3s ease-in-out;
+}
+
+/* ✅ Messages Sent by Me */
+.my-message {
+  align-self: flex-end;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
+  background: rgba(0, 195, 255, 0.3); /* Teal glow */
+  box-shadow: 0 4px 10px rgba(0, 195, 255, 0.5);
+}
+
+/* ✅ Messages Sent by Others */
+.other-message {
+  align-self: flex-start;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 15px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 👤 Sender Info (Top Left) */
+.sender {
+  font-size: 13px;
+  font-weight: bold;
+  opacity: 0.8;
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* ⏳ Timestamp (Bottom Right) */
+
+/* 🎯 Input Container */
+.input-container {
+  display: flex;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+/* ✍️ Input Field */
+.input-container input {
+  flex: 1;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  transition: 0.3s;
+}
+
+.input-container input:focus {
+  border: 1px solid #00c3ff;
+  box-shadow: 0 0 10px rgba(0, 195, 255, 0.5);
+}
+
+/* 🚀 Send Button */
+.input-container button {
+  padding: 12px 18px;
+  font-size: 18px;
+  background: #00c3ff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.input-container button:hover {
+  background: #008fcc;
+  box-shadow: 0 0 10px rgba(0, 195, 255, 0.8);
+}
+
+/* 🔄 Smooth Message Pop-in */
+@keyframes pop-in {
+  from {
+      opacity: 0;
+      transform: scale(0.8);
+  }
+  to {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
+
+/* 📱 Mobile Optimization */
+@media screen and (max-width: 768px) {
+  .message {
+      max-width: 80%;
+  }
+
+  .input-container {
+      flex-direction: column;
+      gap: 10px;
+  }
+}
