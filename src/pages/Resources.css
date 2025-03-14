@@ -1,86 +1,68 @@
-/* Resources Page - Sleek & Consistent Styling */
+/* Resources.css */
+.next-page-container {
+  background-color: #121212; /* Dark background */
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
 
-.resource-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #0a0a0a, #1c1c1c);
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    padding: 40px;
-  }
-  
-  .resource-title {
-    font-size: 2.5rem;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #00c3ff;
-    text-shadow: 0px 0px 10px rgba(0, 195, 255, 0.8);
-  }
-  
-  .resource-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 20px;
-    width: 100%;
-    max-width: 1000px;
-  }
-  
-  .resource-card {
-    background: linear-gradient(135deg, #121212, #1c1c1c);
-    border: 2px solid rgba(0, 195, 255, 0.5);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0, 195, 255, 0.3);
-    transition: transform 0.3s, box-shadow 0.3s;
-    animation: fadeIn 0.5s ease-in-out;
-  }
-  
-  .resource-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 195, 255, 0.8);
-  }
-  
-  .add-resource-form {
-    background: #1c1c1c;
-    border: 2px solid #00c3ff;
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 8px 20px rgba(0, 195, 255, 0.3);
-  }
-  
-  .add-resource-form input {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #00c3ff;
-    background-color: #121212;
-    color: white;
-    border-radius: 5px;
-  }
-  
-  .add-resource-form button {
-    background-color: #00c3ff;
-    color: #121212;
-    border: none;
-    padding: 10px 20px;
-    width: 100%;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .add-resource-form button:hover {
-    background-color: #008ecc;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #007BFF; /* Blue */
+}
+
+.description {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  color: #BBBBBB;
+}
+
+.class-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.class-btn {
+  background-color: #007BFF; /* Blue */
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.class-btn:hover {
+  background-color: #0056b3; /* Darker blue */
+  box-shadow: 0px 0px 15px rgba(0, 123, 255, 0.6);
+  transform: scale(1.1);
+}
+
+.back-btn {
+  background-color: #444;
+  color: white;
+  font-size: 1.3rem;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #666;
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
