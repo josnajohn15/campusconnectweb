@@ -1,5 +1,4 @@
 require("dotenv").config();
-// Load environment variables
 console.log("Hugging Face API Key:", process.env.HUGGINGFACE_API_KEY || "Not Loaded!"); // Debugging
 
 const express = require("express");
@@ -9,21 +8,21 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
 const socketIo = require("socket.io");
-
-// Import Models
 const User = require("./models/User");
 const Message = require("./models/Message");
 const Event = require("./models/events");
-
-// Import Group Chat Routes & Socket Handling
-const { router: groupChatRoutes, setupGroupChat } = require("./routes/groupchats");
-const eventRoutes = require('./routes/eventRoutes');
-const announcementRoutes = require("./routes/announcementRoutes");
-
+require("dotenv").config();
 
 const app = express();
+
+const { router: groupChatRoutes, setupGroupChat } = require("./routes/groupchats");
+const eventRoutes = require("./routes/eventRoutes");
+const announcementRoutes = require("./routes/announcementRoutes");
+const chatbotRoutes = require("./routes/chatbotRoutes");
+
+
+
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
@@ -32,15 +31,15 @@ const io = socketIo(server, {
   },
 });
 
-const PORT = process.env.PORT || 5000;
+
 const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key";
 const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://hari:fisat@cluster0.styn5.mongodb.net/test";
 
-// Middleware
+// ✅ Middleware
 app.use(bodyParser.json());
 app.use(cors());
 
-// Connect to MongoDB
+// ✅ Connect to MongoDB
 mongoose
   .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("✅ MongoDB connected successfully"))
@@ -48,7 +47,7 @@ mongoose
 
 // ===================== AUTH ROUTES =====================
 
-// ✅ Register Route (No Double Hashing)
+// ✅ Register Route
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
@@ -58,7 +57,7 @@ app.post("/register", async (req, res) => {
       return res.status(400).json({ error: "Username already exists" });
     }
 
-    const newUser = new User({ username, password }); // Pass plain password, hashing is handled in schema
+    const newUser = new User({ username, password });
     await newUser.save();
 
     res.status(201).json({ message: "User registered successfully" });
@@ -67,7 +66,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// ✅ Login Route (With Debugging)
+// ✅ Login Route
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -81,7 +80,6 @@ app.post("/login", async (req, res) => {
     console.log("Stored Hashed Password:", user.password);
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-
     console.log("Password Match:", isPasswordValid);
 
     if (!isPasswordValid) {
@@ -98,20 +96,102 @@ app.post("/login", async (req, res) => {
 
 // ✅ Group Chat Routes
 app.use("/groupchat", groupChatRoutes);
-
-// ✅ Initialize Group Chat Socket.IO
 setupGroupChat(io);
 
-//Events
-app.use("/api/events", eventRoutes); 
-
-//Announcements 
+// ✅ Events & Announcements
+app.use("/api/events", eventRoutes);
 app.use("/api/announcements", announcementRoutes);
 
-const chatbotRoutes = require("./routes/chatbotRoutes"); // ✅ Import chatbot route
-app.use("/chatbot", chatbotRoutes); // ✅ Mount chatbot routes under /chatbot
+// ✅ Chatbot Routes
+app.use("/chatbot", chatbotRoutes);
 
-// ✅ Start Server
-server.listen(PORT, () => {
+
+const fs = require("fs");
+const path = require("path");
+const multer = require("multer");
+// ✅ Middleware
+app.use(express.json());
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// ✅ Ensure "uploads" directory exists
+const uploadDir = "./uploads";
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// ✅ Serve uploaded files statically
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// ✅ Connect to MongoDB
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ Connected to MongoDB Atlas"))
+  .catch((err) => console.log("❌ MongoDB Connection Error:", err));
+
+// ✅ Set up Multer storage for file uploads
+const storage = multer.diskStorage({
+  destination: uploadDir,
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+const upload = multer({ storage });
+
+// ✅ Define Mongoose Schema for Resources
+const ResourceSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: String,
+  filePath: { type: String, required: true },
+  uploadedAt: { type: Date, default: Date.now },
+});
+const Resource = mongoose.model("Resource", ResourceSchema);
+
+// ✅ API Route to handle file uploads
+app.post("/upload", upload.single("file"), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+    const { title, description } = req.body;
+    const filePath = req.file.path;
+    const newResource = new Resource({ title, description, filePath });
+    await newResource.save();
+    res.status(200).json({ message: "File uploaded successfully!", filePath });
+  } catch (error) {
+    console.error("Upload error:", error);
+    res.status(500).json({ message: "File upload failed" });
+  }
+});
+
+// ✅ API Route to Fetch All Resources
+app.get("/resources", async (req, res) => {
+  try {
+    const resources = await Resource.find().sort({ uploadedAt: -1 });
+    res.json(resources);
+  } catch (error) {
+    console.error("Error fetching resources:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// ✅ API Route to Fetch Resources by Title
+app.get("/resources/:title", async (req, res) => {
+  try {
+    const title = req.params.title.replace(/-/g, " ");
+    const resources = await Resource.find({ title: { $regex: new RegExp(title, "i") } });
+    res.json(resources);
+  } catch (error) {
+    console.error("Error fetching resources:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
+
+// ✅ Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
