@@ -10,11 +10,13 @@ import Home from './pages/Home';
 import Register from './pages/Register';
 import GroupChats from './pages/GroupChats'; // Adjust the path to the correct location
 import Logout from './pages/Logout';
+
 import ClassPage from './pages/Class';
 import ResourcePage from "./pages/ResourcePage"; 
 import ClassesPage from './pages/ClassesPage';
 import Rfaculty from './pages/Rfaculty';
 import RUpload from './pages/Rupload';
+
 
 const App = () => {
   return (
@@ -30,11 +32,13 @@ const App = () => {
         <Route path="/resources" element={<><Navbar /><Resources /></>} />
         <Route path="/chatbot" element={<><Navbar /><ChatbotComponent /></>} />
         <Route path="/logout" element={<><Navbar /><Logout /></>} />
+
         <Route path="/class/:className" element={<ClassPage />} /> 
         <Route path="/resources/:subject" element={<ResourcePage />} />
         <Route path="/classespage" element={<ClassesPage/>}/>
         <Route path="/rfaculty/:className" element={<Rfaculty />} />
         <Route path="/rupload" element={<RUpload/>}/>
+
       </Routes>
     </Router>
   );

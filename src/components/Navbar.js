@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
@@ -12,6 +13,14 @@ const Navbar = () => {
       setUsername(storedUsername);
     }
   }, []);
+
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import './Navbar.css'; // Import custom CSS for styling
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
 
   return (
     <nav className="navbar">
@@ -29,6 +38,7 @@ const Navbar = () => {
         <li><Link to="/groupchats" className="navbar-link">Group Chats</Link></li>
         <li><Link to="/events" className="navbar-link">Events</Link></li>
 
+
         {/* Change Resources Link Based on User Role */}
         <li>
           <Link 
@@ -38,6 +48,9 @@ const Navbar = () => {
             Resources
           </Link>
         </li>
+
+
+        <li><Link to="/resources" className="navbar-link">Resources</Link></li>
 
         <li><Link to="/chatbot" className="navbar-link">ChatBot</Link></li>
         <li><Link to="/logout" className="navbar-link logout">Logout</Link></li>
