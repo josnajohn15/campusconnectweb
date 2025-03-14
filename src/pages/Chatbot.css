@@ -1,0 +1,63 @@
+/* Chatbot Page Styles - Powerful Sleek Layout */
+
+
+.chatbot-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: rgb(0, 0,0);
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.chatbot-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0a0a0a, #1c1c1c);
+  padding: 60px !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 20px rgba(0, 195, 255, 0.5);
+  width: 800px !important;  /* Force width */
+  height: 700px !important;  /* Force height */
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+  text-align: center;
+  position: relative;
+  animation: floatCard 3s infinite alternate ease-in-out;
+  border: 2px solid rgba(0, 195, 255, 0.8);
+}
+
+
+@keyframes floatCard {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-10px); }
+}
+
+/* Chatbot Toggle Button */
+.chatbot-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 24px;
+  background: linear-gradient(135deg, #00c3ff, #007bff);
+  color: rgb(246, 242, 242);
+  border: none;
+  border-radius: 50%;
+  padding: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(0, 195, 255, 0.5);
+}
+
+.chatbot-toggle:hover {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  box-shadow: 0 6px 15px rgba(0, 195, 255, 0.8);
+}

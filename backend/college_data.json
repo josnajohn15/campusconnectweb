@@ -1,0 +1,64 @@
+{
+    "general_info": {
+      "name": "Federal Institute of Science and Technology (FISAT)",
+      "established": "2002",
+      "motto": "Focus on Excellence",
+      "vision": "To become a world-class professional institute with a focus on excellence, molding committed global professionals and technocrats who can meet the demands of business, industry, and research.",
+      "mission": "To provide advanced technical education, transform students into industry-ready professionals, and instill social commitment and ethical values."
+    },
+  
+    "campuslocation": {
+      "location": "College is located in Hormis Nagar, Mookkannoor, Angamaly, Ernakulam District, Kerala."
+  
+    },
+  
+    "affiliation": {
+      "university": "APJ Abdul Kalam Technological University (KTU), approved by AICTE, New Delhi.",
+      "accreditation": "NAAC A+ Grade (2nd cycle), NBA accreditation for six B.Tech programs, and ISO 9001:2015 certification."
+    },
+  
+    "programs": {
+      "BTech": "FISAT offers B.Tech programs in Civil Engineering (120 seats), Computer Science and Engineering (180 seats), Electronics and Communication Engineering (120 seats), Electrical and Electronics Engineering (60 seats), Electronics and Instrumentation Engineering (60 seats), Mechanical Engineering (120 seats), and Computer Science and Design (newly introduced).",
+      "MTech": "M.Tech programs are available in Artificial Intelligence and Data Science, Power Electronics and Power Systems, Renewable Energy, VLSI & Embedded Systems, and Structural Engineering & Construction Management.",
+      "MBA": "The MBA program has 120 seats with specializations in Finance, Marketing, Human Resource Management, Information System, Production & Operations Management, and International Business.",
+      "MCA": "The Master of Computer Applications (MCA) program has 120 seats, with an integrated MCA option.",
+      "PhD": "Doctoral programs are offered in various disciplines."
+    },
+  
+    "faculty": {
+      "HOD": "The HOD(Head of the Deaprtment) are Dr. S Krishna Kumar (ECE), Dr. Jiji Antony (Civil), Dr. Abi P Mathew (EIE), Dr. Archana R (EEE), Dr. Jyothish K John (CSE), Dr. Sumanlal M R (ME), Dr. Deepa Mary Mathews (MCA), and Ms. Honeymol P Chacko (Science & Humanities)."
+    },
+  
+    "facilities": {
+      "hostel": "FISAT hostel accommodates 500 students with WiFi and study rooms.",
+      "library": "The library has over 50,000 books, reference materials, and online research journal access.",
+      "transport": "The college operates 30 buses covering various city routes.",
+      "labs": "Well-equipped labs for Electrical, Electronics, Computer, Instrumentation, Civil, and Mechanical Engineering.",
+      "sports": "FISAT has a stadium, gymnasium, and modern sports facilities.",
+      "seminar_halls": "Multiple air-conditioned seminar halls with LCD projectors.",
+      "auditorium": "800-seat auditorium with high-tech audio and stage setup.",
+      "canteen": "Well-maintained canteen serving hygienic food.",
+      "workshops": "Workshops for hands-on training in engineering disciplines."
+    },
+  
+    "events": {
+      "ICEFOSS": "ICEFOSS is an annual Free and Open Source Software (FOSS) event with workshops, hackathons, and expert talks.",
+      "tech_fests": "Tech fests at FISAT focus on innovation, competitions, and workshops.",
+      "cultural_fests": "Cultural fests include music, dance, arts, and creative events.",
+      "hackathons": "Regular hackathons encourage coding, problem-solving, and teamwork.",
+      "clubs": "Active student clubs include ACM, IEEE, IEDC, NSS, and FOSS Club."
+    },
+  
+    "placementoverview": {
+      "placements": "FISAT has an excellent placement record with students placed in top multinational companies and public sector organizations.",
+      "recruiters": "IBM, TCS, Infosys, Accenture, SAP, Wipro, CTS, IBS, UST Global, BARC, ONGC, Powergrid, Delhi Metro, Federal Bank, South Indian Bank, MRF, Apollo Tyres, Sobha, Procsys, Kalkitech.",
+      "training": "100+ hours of soft skills and technical training, career guidance for GATE, CAT, MAT, GRE, UPSC, and other entrance exams."
+    },
+  
+    "contact": {
+      "website": "https://fisat.ac.in",
+      "email": "admission@fisat.ac.in",
+      "phone": "+91 1234567890",
+      "details": "email:admission@fisat.ac.in phone:91 1234567890"
+    }
+  }

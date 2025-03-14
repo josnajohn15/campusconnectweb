@@ -1,0 +1,98 @@
+/* Reset default margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Glassmorphism Navbar - Fixed at the Very Top */
+.navbar {
+  position: fixed;
+  top: 0; /* Ensure it's stuck to the very top */
+  left: 0;
+  width: 100%;
+  background: #007bff; /* Dark blue with transparency */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 5px 15px rgba(0, 102, 255, 0.5);
+  z-index: 1000;
+}
+
+/* Logo */
+.navbar-logo h2 {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Navbar Links */
+.navbar-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.navbar-link {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 15px;
+  border-radius: 10px;
+  transition: 0.3s ease-in-out;
+  position: relative;
+}
+
+/* Hover Effect: Animated Underline */
+.navbar-link::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background: #00c3ff;
+  left: 0;
+  bottom: -5px;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.navbar-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Hover Effect: Glow */
+.navbar-link:hover {
+  color: #00c3ff;
+  text-shadow: 0 0 15px rgba(0, 195, 255, 0.8);
+}
+
+/* Ensure body content starts right below navbar */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: black; /* To match your theme */
+}
+
+/* Push main content below navbar */
+main {
+  padding-top: 60px; /* Adjust to navbar height */
+}
+
+/* Responsive for Mobile */
+@media screen and (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+}
