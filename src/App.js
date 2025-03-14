@@ -12,7 +12,9 @@ import GroupChats from './pages/GroupChats'; // Adjust the path to the correct l
 import Logout from './pages/Logout';
 import ClassPage from './pages/Class';
 import ResourcePage from "./pages/ResourcePage"; 
-
+import ClassesPage from './pages/ClassesPage';
+import Rfaculty from './pages/Rfaculty';
+import RUpload from './pages/Rupload';
 
 const App = () => {
   return (
@@ -30,6 +32,9 @@ const App = () => {
         <Route path="/logout" element={<><Navbar /><Logout /></>} />
         <Route path="/class/:className" element={<ClassPage />} /> 
         <Route path="/resources/:subject" element={<ResourcePage />} />
+        <Route path="/classespage" element={<ClassesPage/>}/>
+        <Route path="/rfaculty/:className" element={<Rfaculty />} />
+        <Route path="/rupload" element={<RUpload/>}/>
       </Routes>
     </Router>
   );
