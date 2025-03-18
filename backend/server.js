@@ -22,6 +22,9 @@ const { router: groupChatRoutes, setupGroupChat } = require("./routes/groupchats
 const eventRoutes = require("./routes/eventRoutes");
 const announcementRoutes = require("./routes/announcementRoutes");
 const chatbotRoutes = require("./routes/chatbotRoutes");
+const registerRoutes = require("./routes/registerRoutes");
+const sendConfirmationEmail = require("./config/emailConfig"); // Import email function
+const Registration = require("./models/Registration"); // Import Registration model
 
 const app = express();
 
@@ -32,6 +35,8 @@ const io = socketIo(server, {
     methods: ["GET", "POST"],
   },
 });
+
+
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key";
 const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://hari:fisat@cluster0.styn5.mongodb.net/test";
@@ -97,6 +102,9 @@ app.use("/api/announcements", announcementRoutes);
 // ✅ Chatbot Routes
 app.use("/chatbot", chatbotRoutes);
 
+app.use("/api/register", registerRoutes);
+
+
 // File Upload Handling
 const fs = require("fs");
 const path = require("path");
@@ -159,6 +167,48 @@ app.get("/resources/:title", async (req, res) => {
   } catch (error) {
     console.error("Error fetching resources:", error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Registration Route with Email Confirmation
+app.post("/api/register", async (req, res) => {
+  try {
+    const { name, department, semester, email, phone, eventId } = req.body;
+
+    // Fetch Event Details
+    const event = await Event.findById(eventId);
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    const eventTitle = event.title;
+    const eventDate = event.date; // Assuming 'date' field exists in Event model
+
+    const newRegistration = new Registration({
+      name,
+      department,
+      semester,
+      email,
+      phone,
+      eventId,
+      eventTitle,
+    });
+
+    await newRegistration.save();
+
+    // Send Confirmation Email with Event Details
+    if (sendConfirmationEmail) {
+      await sendConfirmationEmail(email, name, eventTitle, eventDate);
+      console.log(`📧 Confirmation email sent to ${email}`);
+    } else {
+      console.warn("⚠️ Email function not properly configured.");
+    }
+
+    res.status(200).json({ message: "Registration successful! Confirmation email sent." });
+
+  } catch (error) {
+    console.error("❌ Error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

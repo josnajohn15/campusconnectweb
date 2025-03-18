@@ -1,10 +1,10 @@
-/* 🌟 Vibrant and Darker Theme for Events Page - Matching Reference Design */
+/* 🌟 Vibrant and Darker Theme for Events Page - Enhanced */
 .event-container {
   text-align: center;
   font-family: "Poppins", sans-serif;
   padding: 20px;
   min-height: 100vh;
-  background: black; 
+  background: black;
   color: white;
 }
 
@@ -20,28 +20,44 @@ h1 {
 /* Add Event Form (Admin Only) */
 .add-event-form {
   background: rgba(0, 102, 255, 0.3);
-  padding: 12px;
+  padding: 15px;
   border-radius: 10px;
   display: inline-block;
   margin-bottom: 20px;
-  box-shadow: 0 0 10px rgba(0, 195, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 195, 255, 0.7);
+  max-width: 400px;
+  width: 100%;
 }
 
 .add-event-form input,
 .add-event-form button {
   width: 100%;
   margin-bottom: 10px;
-  padding: 8px;
+  padding: 10px;
   border: 2px solid #00c3ff;
   background-color: #222;
   color: white;
   border-radius: 5px;
+  font-size: 16px;
+  transition: all 0.3s ease-in-out;
+}
+
+.add-event-form input:focus {
+  border-color: #00ffcc;
+  box-shadow: 0 0 10px rgba(0, 255, 204, 0.7);
+  outline: none;
 }
 
 .add-event-form button {
-  background-color: #00c3ff;
+  background: linear-gradient(135deg, #00c3ff, #007bff);
   cursor: pointer;
   font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+.add-event-form button:hover {
+  background: linear-gradient(135deg, #007bff, #00ffcc);
+  transform: scale(1.05);
 }
 
 /* Event List Layout */
@@ -104,4 +120,23 @@ h1 {
   font-size: 15px;
   color: #ddd;
   margin-top: 5px;
+}
+
+/* Register Button */
+.register-btn {
+  background: linear-gradient(135deg, #00c3ff, #007bff);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+.register-btn:hover {
+  background: linear-gradient(135deg, #007bff, #00ffcc);
+  transform: scale(1.05);
 }

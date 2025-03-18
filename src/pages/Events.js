@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 import "./Events.css";
 
 const Events = () => {
@@ -8,6 +9,7 @@ const Events = () => {
     const [title, setTitle] = useState("");
     const [date, setDate] = useState("");
     const [description, setDescription] = useState("");
+    const navigate = useNavigate();
 
     const username = localStorage.getItem('username'); // Get username from storage
 
@@ -93,6 +95,13 @@ const Events = () => {
                             <h3>{event.title}</h3>
                             <p>{moment(event.date).format("dddd, MMMM DD, YYYY")}</p>
                             <p>{event.description}</p>
+                            {/* Register Button */}
+                            <button 
+                                className="register-btn" 
+                                onClick={() => navigate(`/register/${event._id}`)}
+                            >
+                                Register
+                            </button>
                         </div>
                     </div>
                 ))}

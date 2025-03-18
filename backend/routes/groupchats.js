@@ -1,6 +1,17 @@
 const express = require("express");
 const router = express.Router();
+const Sentiment = require("sentiment");
 const Message = require("../models/Message");
+
+const sentiment = new Sentiment();
+
+const getEmojiForSentiment = (score) => {
+  if (score > 3) return "😊";
+  if (score > 1) return "🙂";
+  if (score < -3) return "😔";
+  if (score < -1) return "😐";
+  return "💬";
+};
 
 router.get("/messages", async (req, res) => {
   try {
@@ -16,44 +27,39 @@ const setupGroupChat = (io) => {
   io.on("connection", async (socket) => {
     console.log("✅ User Connected:", socket.id);
 
-    try {
-      // ✅ Fetch all previous messages when user connects
-      const messages = await Message.find().sort({ timestamp: 1 });
-      socket.emit("previousMessages", messages);
-    } catch (error) {
-      console.error("❌ Error fetching previous messages:", error);
-    }
+    socket.on("userJoined", (username) => {
+      console.log(`🚶‍♂️ ${username} joined the chat`);
+      io.emit("userJoined", `${username} joined the chat`);
+    });
 
-    // ✅ Listen for new messages
+    socket.on("typing", (username) => {
+      socket.broadcast.emit("typing", `${username} is typing...`);
+    });
+
     socket.on("sendMessage", async (data) => {
       console.log("📩 Received message data:", data);
 
-      if (!data.sender || !data.message) {
-        console.error("❌ Missing required fields:", data);
-        return;
-      }
+      const analysis = sentiment.analyze(data.message);
+      const emoji = getEmojiForSentiment(analysis.score);
 
       try {
-        // ✅ Save message to MongoDB
         const newMessage = new Message({
           sender: data.sender,
           message: data.message,
-          timestamp: new Date(), // Ensure timestamp is properly set
+          emoji,
+          timestamp: new Date(),
         });
 
         const savedMessage = await newMessage.save();
-        console.log("✅ Message saved to DB:", savedMessage);
-
-        // ✅ Broadcast message to all connected users
         io.emit("receiveMessage", savedMessage);
       } catch (error) {
         console.error("❌ Error saving message to DB:", error.message);
       }
     });
 
-    // ✅ Handle user disconnection
     socket.on("disconnect", () => {
       console.log("❌ User Disconnected:", socket.id);
+      io.emit("userLeft", `A user has left the chat`);
     });
   });
 };

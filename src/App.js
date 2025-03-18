@@ -16,6 +16,7 @@ import ResourcePage from "./pages/ResourcePage";
 import ClassesPage from './pages/ClassesPage';
 import Rfaculty from './pages/Rfaculty';
 import RUpload from './pages/Rupload';
+import RegisterPage from './pages/RegisterPage';
 
 
 const App = () => {
@@ -29,6 +30,8 @@ const App = () => {
         <Route path="/announcements" element={<><Navbar /><Announcements /></>} />
         <Route path="/groupchats" element={<><Navbar /><GroupChats /></>} />
         <Route path="/events" element={<><Navbar /><Events /></>} />
+        <Route path="/register/:eventId" element={<RegisterPage />} />
+
         <Route path="/resources" element={<><Navbar /><Resources /></>} />
         <Route path="/chatbot" element={<><Navbar /><ChatbotComponent /></>} />
         <Route path="/logout" element={<><Navbar /><Logout /></>} />
