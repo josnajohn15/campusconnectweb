@@ -32,9 +32,7 @@ const setupGroupChat = (io) => {
       io.emit("userJoined", `${username} joined the chat`);
     });
 
-    socket.on("typing", (username) => {
-      socket.broadcast.emit("typing", `${username} is typing...`);
-    });
+   
 
     socket.on("sendMessage", async (data) => {
       console.log("📩 Received message data:", data);

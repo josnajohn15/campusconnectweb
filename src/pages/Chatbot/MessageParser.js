@@ -1,19 +1,30 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
+
 const MessageParser = ({ children, actions }) => {
+    const [lastSuggestedQuestion, setLastSuggestedQuestion] = useState(null);
+
     const parse = async (message) => {
-        console.log("User message:", message); // Debugging
+        console.log("User message:", message);
 
         try {
-          const response = await axios.post("http://localhost:5000/chatbot/chat",
-
-                { message }, 
-                { headers: { "Content-Type": "application/json" } }  // ✅ Correct JSON format
+            const response = await axios.post(
+                "http://localhost:5000/chatbot/chat",
+                { message },
+                { headers: { "Content-Type": "application/json" } }
             );
-            const aiReply = response.data.reply; 
+
+            const aiReply = response.data.reply;
 
             if (aiReply) {
-                actions.addMessageToBotQueue(aiReply);
+                if (aiReply.startsWith("Did you mean")) {
+                    // ✅ Store the suggested question
+                    setLastSuggestedQuestion(aiReply);
+                    actions.addMessageToBotQueue(aiReply);
+                } else {
+                    setLastSuggestedQuestion(null); // ✅ Reset if an answer is provided
+                    actions.addMessageToBotQueue(aiReply);
+                }
             } else {
                 actions.addMessageToBotQueue("Sorry, I couldn't understand that. Please try again.");
             }
@@ -25,7 +36,9 @@ const MessageParser = ({ children, actions }) => {
 
     return (
         <div>
-            {React.Children.map(children, (child) => React.cloneElement(child, { parse, actions }))}
+            {React.Children.map(children, (child) =>
+                React.cloneElement(child, { parse, actions })
+            )}
         </div>
     );
 };
