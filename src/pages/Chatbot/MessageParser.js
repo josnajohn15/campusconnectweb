@@ -2,16 +2,14 @@ import axios from "axios";
 import React, { useState } from "react";
 
 const MessageParser = ({ children, actions }) => {
-    const [ setLastSuggestedQuestion] = useState(null);
-
     const parse = async (message) => {
         console.log("User message:", message);
 
         try {
-            const response = await axios.post(
-                "https://campusconnectweb.onrender.com/chatbot/chat",
-                { message },
-                { headers: { "Content-Type": "application/json" } }
+          const response = await axios.post("http://localhost:5000/chatbot/chat",
+
+                { message }, 
+                { headers: { "Content-Type": "application/json" } }  // ✅ Correct JSON format
             );
 
             const aiReply = response.data.reply;
