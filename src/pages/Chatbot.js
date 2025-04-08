@@ -5,7 +5,6 @@ import MessageParser from "./Chatbot/MessageParser";
 import ActionProvider from "./Chatbot/ActionProvider"; // for styling by ourselves
 import "react-chatbot-kit/build/main.css"; // for predefined chatbot styling
 import './Chatbot.css'; // Make sure to import your CSS
-import Navbar from '../components/Navbar';
 
 // Rename your component to avoid the conflict
 const ChatbotComponent = () => {

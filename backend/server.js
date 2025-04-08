@@ -14,7 +14,6 @@ const socketIo = require("socket.io"); // Declare socket.io only once
 
 // Import Models
 const User = require("./models/User");
-const Message = require("./models/Message");
 const Event = require("./models/events");
 
 // Import Group Chat Routes & Socket Handling

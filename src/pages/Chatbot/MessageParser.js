@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 
 const MessageParser = ({ children, actions }) => {
-    const [lastSuggestedQuestion, setLastSuggestedQuestion] = useState(null);
+    const [ setLastSuggestedQuestion] = useState(null);
 
     const parse = async (message) => {
         console.log("User message:", message);

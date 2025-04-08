@@ -1,11 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion"; 
-import React, { useState } from "react";
 import "./Resources.css";
 
 const Resources = () => {
   const navigate = useNavigate();
-  const username = localStorage.getItem("username");
 
   const goToClassPage = (className) => {
     navigate(`/class/${className}`); // ✅ Corrected syntax for navigation

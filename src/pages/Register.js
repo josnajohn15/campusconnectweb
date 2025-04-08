@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import './Register.css'; // Link to external CSS for styling
@@ -34,7 +33,6 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/register", formData);
       setMessage("Registration successful!");
       navigate("/login"); // Redirect to login page after successful registration
     } catch (err) {
