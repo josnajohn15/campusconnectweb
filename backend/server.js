@@ -10,23 +10,22 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const socketIo = require("socket.io"); // Declare socket.io only once
+const socketIo = require("socket.io");
 
 // Import Models
 const User = require("./models/User");
 const Event = require("./models/events");
 
-// Import Group Chat Routes & Socket Handling
+// Import Routes
 const { router: groupChatRoutes, setupGroupChat } = require("./routes/groupchats");
 const eventRoutes = require("./routes/eventRoutes");
 const announcementRoutes = require("./routes/announcementRoutes");
 const chatbotRoutes = require("./routes/chatbotRoutes");
 const registerRoutes = require("./routes/registerRoutes");
-const sendConfirmationEmail = require("./config/emailConfig"); // Import email function
-const Registration = require("./models/Registration"); // Import Registration model
+const sendConfirmationEmail = require("./config/emailConfig");
+const Registration = require("./models/Registration");
 
 const app = express();
-
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
@@ -34,8 +33,6 @@ const io = socketIo(server, {
     methods: ["GET", "POST"],
   },
 });
-
-
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key";
 const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://hari:fisat@cluster0.styn5.mongodb.net/test";
@@ -100,11 +97,9 @@ app.use("/api/announcements", announcementRoutes);
 
 // ✅ Chatbot Routes
 app.use("/chatbot", chatbotRoutes);
-
 app.use("/api/register", registerRoutes);
 
-
-// File Upload Handling
+// ✅ File Upload Handling
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
@@ -114,7 +109,6 @@ if (!fs.existsSync(uploadDir)) {
 }
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Multer setup
 const storage = multer.diskStorage({
   destination: uploadDir,
   filename: (req, file, cb) => {
@@ -123,7 +117,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Resource Schema and API Routes for file uploads
 const ResourceSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: String,
@@ -169,19 +162,15 @@ app.get("/resources/:title", async (req, res) => {
   }
 });
 
-// Registration Route with Email Confirmation
+// ✅ Registration Route with Email Confirmation
 app.post("/api/register", async (req, res) => {
   try {
     const { name, department, semester, email, phone, eventId } = req.body;
 
-    // Fetch Event Details
     const event = await Event.findById(eventId);
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
-
-    const eventTitle = event.title;
-    const eventDate = event.date; // Assuming 'date' field exists in Event model
 
     const newRegistration = new Registration({
       name,
@@ -190,29 +179,27 @@ app.post("/api/register", async (req, res) => {
       email,
       phone,
       eventId,
-      eventTitle,
+      eventTitle: event.title,
     });
 
     await newRegistration.save();
 
-    // Send Confirmation Email with Event Details
     if (sendConfirmationEmail) {
-      await sendConfirmationEmail(email, name, eventTitle, eventDate);
+      await sendConfirmationEmail(email, name, event.title, event.date);
       console.log(`📧 Confirmation email sent to ${email}`);
     } else {
       console.warn("⚠️ Email function not properly configured.");
     }
 
     res.status(200).json({ message: "Registration successful! Confirmation email sent." });
-
   } catch (error) {
     console.error("❌ Error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// ✅ Start server
+// ✅ Start server with 0.0.0.0 for Railway/Render compatibility
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server running on http://0.0.0.0:${PORT}`);
 });
