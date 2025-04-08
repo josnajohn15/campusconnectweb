@@ -40,7 +40,7 @@ const GroupChats = () => {
       socket.off("userLeft");
       socket.off("typing");
     };
-  }, []);
+  }, [username]);
 
   // ✅ Send message function
   const sendMessage = () => {
