@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import "./GroupChats.css";
 import ParticleBackground from '../components/ParticleBackground';
 
-const socket = io("http://localhost:5000");
+const socket = io("https://campus-connect-backend.onrender.com");
 
 // ✅ Blue-Themed Random Colors
 const getRandomBlueShade = () => {

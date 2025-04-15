@@ -1,8 +1,6 @@
 require("dotenv").config();
 
-// Load environment variables
-console.log("Hugging Face API Key:", process.env.HUGGINGFACE_API_KEY || "Not Loaded!"); // Debugging
-
+// ✅ Load environment variables
 const express = require("express");
 const http = require("http");
 const mongoose = require("mongoose");
@@ -11,31 +9,37 @@ const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const socketIo = require("socket.io");
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 
-// Import Models
+const app = express();
+const server = http.createServer(app);
+
+// ✅ Setup Socket.IO
+const io = socketIo(server, {
+  cors: {
+    origin: "https://campusconnectfisat.netlify.app",
+    methods: ["GET", "POST"],
+  },
+});
+
+// ✅ MongoDB Connection URI and JWT secret
+const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key";
+const MONGO_URI = process.env.MONGO_URI;
+
+// ✅ Import Models
 const User = require("./models/User");
 const Event = require("./models/events");
+const Registration = require("./models/Registration");
 
-// Import Routes
+// ✅ Import Routes
 const { router: groupChatRoutes, setupGroupChat } = require("./routes/groupchats");
 const eventRoutes = require("./routes/eventRoutes");
 const announcementRoutes = require("./routes/announcementRoutes");
 const chatbotRoutes = require("./routes/chatbotRoutes");
 const registerRoutes = require("./routes/registerRoutes");
 const sendConfirmationEmail = require("./config/emailConfig");
-const Registration = require("./models/Registration");
-
-const app = express();
-const server = http.createServer(app);
-const io = socketIo(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
-});
-
-const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key";
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://hari:fisat@cluster0.styn5.mongodb.net/test";
 
 // ✅ Middleware
 app.use(bodyParser.json());
@@ -54,11 +58,10 @@ app.post("/register", async (req, res) => {
   const { username, password } = req.body;
   try {
     const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      return res.status(400).json({ error: "Username already exists" });
-    }
+    if (existingUser) return res.status(400).json({ error: "Username already exists" });
 
-    const newUser = new User({ username, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, password: hashedPassword });
     await newUser.save();
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
@@ -71,14 +74,10 @@ app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    if (!user) return res.status(404).json({ error: "User not found" });
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(400).json({ error: "Invalid password" });
-    }
+    if (!isPasswordValid) return res.status(400).json({ error: "Invalid password" });
 
     const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, { expiresIn: "1h" });
     res.status(200).json({ token, username: user.username });
@@ -87,33 +86,23 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// ✅ Group Chat Routes
-app.use("/groupchat", groupChatRoutes);
+// ===================== ROUTES =====================
+app.use("/groupchat", groupChatRoutes); // Group Chat
 setupGroupChat(io);
 
-// ✅ Events & Announcements
-app.use("/api/events", eventRoutes);
-app.use("/api/announcements", announcementRoutes);
+app.use("/api/events", eventRoutes); // Events
+app.use("/api/announcements", announcementRoutes); // Announcements
+app.use("/chatbot", chatbotRoutes); // Chatbot
+app.use("/api/register", registerRoutes); // Registration Page
 
-// ✅ Chatbot Routes
-app.use("/chatbot", chatbotRoutes);
-app.use("/api/register", registerRoutes);
-
-// ✅ File Upload Handling
-const fs = require("fs");
-const path = require("path");
-const multer = require("multer");
+// ===================== FILE UPLOAD (Resources) =====================
 const uploadDir = "./uploads";
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const storage = multer.diskStorage({
   destination: uploadDir,
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
+  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
 });
 const upload = multer({ storage });
 
@@ -125,52 +114,50 @@ const ResourceSchema = new mongoose.Schema({
 });
 const Resource = mongoose.model("Resource", ResourceSchema);
 
+// ✅ Upload a resource
 app.post("/upload", upload.single("file"), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
-    }
     const { title, description } = req.body;
+    if (!req.file) return res.status(400).json({ message: "No file uploaded" });
+
     const filePath = req.file.path;
     const newResource = new Resource({ title, description, filePath });
     await newResource.save();
     res.status(200).json({ message: "File uploaded successfully!", filePath });
-  } catch (error) {
-    console.error("Upload error:", error);
+  } catch (err) {
+    console.error("Upload error:", err);
     res.status(500).json({ message: "File upload failed" });
   }
 });
 
+// ✅ Fetch all resources
 app.get("/resources", async (req, res) => {
   try {
     const resources = await Resource.find().sort({ uploadedAt: -1 });
     res.json(resources);
-  } catch (error) {
-    console.error("Error fetching resources:", error);
+  } catch (err) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
+// ✅ Search resources by title
 app.get("/resources/:title", async (req, res) => {
   try {
     const title = req.params.title.replace(/-/g, " ");
     const resources = await Resource.find({ title: { $regex: new RegExp(title, "i") } });
     res.json(resources);
-  } catch (error) {
-    console.error("Error fetching resources:", error);
+  } catch (err) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-// ✅ Registration Route with Email Confirmation
+// ✅ Event Registration + Email
 app.post("/api/register", async (req, res) => {
   try {
     const { name, department, semester, email, phone, eventId } = req.body;
 
     const event = await Event.findById(eventId);
-    if (!event) {
-      return res.status(404).json({ message: "Event not found" });
-    }
+    if (!event) return res.status(404).json({ message: "Event not found" });
 
     const newRegistration = new Registration({
       name,
@@ -187,18 +174,16 @@ app.post("/api/register", async (req, res) => {
     if (sendConfirmationEmail) {
       await sendConfirmationEmail(email, name, event.title, event.date);
       console.log(`📧 Confirmation email sent to ${email}`);
-    } else {
-      console.warn("⚠️ Email function not properly configured.");
     }
 
     res.status(200).json({ message: "Registration successful! Confirmation email sent." });
-  } catch (error) {
-    console.error("❌ Error:", error);
+  } catch (err) {
+    console.error("❌ Registration error:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// ✅ Start server with 0.0.0.0 for Railway/Render compatibility
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on http://0.0.0.0:${PORT}`);

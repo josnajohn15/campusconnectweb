@@ -21,7 +21,7 @@ const RegisterPage = () => {
         e.preventDefault();
 
         try {
-            await axios.post("http://localhost:5000/api/register", { ...formData, eventId });
+            await axios.post("https://campus-connect-backend.onrender.com/api/register", { ...formData, eventId });
             alert("✅ Registration successful! Confirmation email sent.");
         } catch (error) {
             console.error("❌ Registration error:", error);

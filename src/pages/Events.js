@@ -15,7 +15,7 @@ const Events = () => {
 
     const fetchEvents = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/api/events/get-events");
+            const response = await axios.get("https://campus-connect-backend.onrender.com/api/events/get-events");
             setEvents(response.data);
         } catch (error) {
             console.error("❌ Error fetching events", error);
@@ -36,7 +36,7 @@ const Events = () => {
         const newEvent = { username, title, description, date: formattedDate };
 
         try {
-            const response = await axios.post("http://localhost:5000/api/events/add-event", newEvent);
+            const response = await axios.post("https://campus-connect-backend.onrender.com/api/events/add-event", newEvent);
             if (response.status === 201) {
                 alert("✅ Event Added Successfully!");
                 setTitle("");

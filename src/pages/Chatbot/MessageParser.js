@@ -9,7 +9,7 @@ const MessageParser = ({ children, actions }) => {
 
         try {
             const response = await axios.post(
-                "http://localhost:5000/chatbot/chat",
+                "https://campus-connect-backend.onrender.com/chatbot/chat",
                 { message },
                 { headers: { "Content-Type": "application/json" } }
             );

@@ -33,7 +33,7 @@ const Login = () => {
 
     setLoading(true); // Set loading state while making the request
     try {
-      const response = await axios.post("http://localhost:5000/login", formData);
+      const response = await axios.post("https://campus-connect-backend.onrender.com/login", formData);
       
       // Save token and username in localStorage
       localStorage.setItem("token", response.data.token);

@@ -14,7 +14,7 @@ const ResourcePage = () => {
   useEffect(() => {
     const fetchResources = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/resources/${subject}`);
+        const response = await axios.get(`https://campus-connect-backend.onrender.com/resources/${subject}`);
         setResources(response.data);
       } catch (error) {
         console.error("Error fetching resources:", error);
