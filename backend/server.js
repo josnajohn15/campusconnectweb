@@ -39,7 +39,10 @@ const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://hari:fisat@cluster0.st
 
 // ✅ Middleware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+  origin: 'https://campusconnectfisat.netlify.app',
+  credentials: true
+}));
 
 // ✅ Connect to MongoDB
 mongoose
