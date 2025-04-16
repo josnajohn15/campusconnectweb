@@ -11,7 +11,7 @@ const Announcements = () => {
     const username = localStorage.getItem("username");
 
     useEffect(() => {
-        axios.get("https://campus-connect-backend.onrender.com/api/announcements/get-announcements")
+        axios.get("https://campusconnectweb.onrender.com/api/announcements/get-announcements")
             .then((response) => setAnnouncements(response.data))
             .catch((error) => console.error("❌ Error fetching announcements:", error));
     }, []);
@@ -23,7 +23,7 @@ const Announcements = () => {
         }
 
         try {
-            const response = await axios.post("https://campus-connect-backend.onrender.com/api/announcements/add-announcement", {
+            const response = await axios.post("https://campusconnectweb.onrender.com/api/announcements/add-announcement", {
                 username,
                 title,
                 message,
@@ -33,7 +33,7 @@ const Announcements = () => {
                 alert("✅ Announcement Added Successfully!");
                 setTitle("");
                 setMessage("");
-                axios.get("https://campus-connect-backend.onrender.com/api/announcements/get-announcements")
+                axios.get("https://campusconnectweb.onrender.com/api/announcements/get-announcements")
                     .then((response) => setAnnouncements(response.data));
             } else {
                 alert("⚠ Something went wrong. Try again.");

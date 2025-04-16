@@ -44,7 +44,7 @@ const Rfaculty = () => {
     formData.append("className", className);
 
     try {
-      await axios.post("https://campus-connect-backend.onrender.com/upload", formData, {
+      await axios.post("https://campusconnectweb.onrender.com/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

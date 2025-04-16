@@ -26,7 +26,7 @@ const RUpload = () => {
     try {
       console.log("🔄 Uploading file...");
   
-      const response = await axios.post("https://campus-connect-backend.onrender.com/api/resources/upload", formData, {
+      const response = await axios.post("https://campusconnectweb.onrender.com/api/resources/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       
